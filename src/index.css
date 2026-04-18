@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-accent: var(--gym-accent);
+  --color-accent-dim: var(--gym-accent-dim);
+  --color-surface: var(--gym-surface);
+  --color-surface-dim: var(--gym-surface-dim);
+  --color-border: var(--gym-border);
+  --color-bg: var(--gym-bg);
+  --color-text: var(--gym-text);
+  --color-text-dim: var(--gym-text-dim);
+}
+
+:root {
+  --gym-accent: #ff0000;
+  --gym-accent-rgb: 255, 0, 0;
+  --gym-accent-dim: rgba(255, 0, 0, 0.1);
+  --gym-bg: #000000;
+  --gym-surface: #121212;
+  --gym-surface-dim: #18181b;
+  --gym-border: #27272a;
+  --gym-text: #ffffff;
+  --gym-text-dim: #a1a1aa;
+}
+
+[data-theme="light"] {
+  --gym-accent: #0088ff;
+  --gym-accent-rgb: 0, 136, 255;
+  --gym-accent-dim: rgba(0, 136, 255, 0.1);
+  --gym-bg: #ffffff;
+  --gym-surface: #f8fafc;
+  --gym-surface-dim: #f1f5f9;
+  --gym-border: #e2e8f0;
+  --gym-text: #0f172a;
+  --gym-text-dim: #64748b;
+}
+
+[data-theme="neon"] {
+  --gym-accent: #00ff00;
+  --gym-accent-rgb: 0, 255, 0;
+  --gym-accent-dim: rgba(0, 255, 0, 0.1);
+  --gym-bg: #000000;
+  --gym-surface: #0a0a0a;
+  --gym-surface-dim: #111111;
+  --gym-border: #1a1a1a;
+  --gym-text: #ffffff;
+  --gym-text-dim: #71717a;
+}
+
+@layer base {
+  body {
+    @apply font-sans antialiased bg-bg text-text transition-colors duration-300;
+  }
+}
+
+.gym-card {
+  @apply bg-surface border border-border rounded-2xl p-6 transition-all;
+}
+
+.brand-glow {
+  box-shadow: 0 0 20px var(--gym-accent-dim);
+}

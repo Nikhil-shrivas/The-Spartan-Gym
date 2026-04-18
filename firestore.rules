@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- REUSABLE HELPERS ---
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { 
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); 
+    }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // --- MEMBER VALIDATION ---
+    function isValidMember(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.phone is string && data.phone.size() <= 30 &&
+             data.membershipCode is string && data.membershipCode.size() >= 1 && data.membershipCode.size() <= 25 &&
+             data.plan is string &&
+             data.expiryDate is string &&
+             data.status in ['active', 'paused', 'expired', 'extended'];
+    }
+
+    // --- COLLECTIONS ---
+
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && request.auth.uid == adminId;
+      allow list: if isAdmin();
+      allow write: if false;
+    }
+
+    match /members/{memberId} {
+      allow read: if true;
+      allow create: if isValidMember(incoming());
+      allow update: if isValidMember(incoming());
+      allow delete: if true; 
+    }
+
+    match /staff/{staffId} {
+      allow read, write: if true;
+    }
+  }
+}
