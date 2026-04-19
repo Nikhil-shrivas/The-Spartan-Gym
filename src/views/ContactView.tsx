@@ -1,16 +1,16 @@
 import { motion } from 'motion/react';
 import { GYM_DETAILS } from '../constants';
-import { Phone, Mail, MapPin, ExternalLink, Clock, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, ExternalLink, Clock, Instagram, MessageCircle, ArrowRight } from 'lucide-react';
 
 export default function ContactView() {
   return (
     <div className="pt-32 pb-32 max-w-7xl mx-auto px-6">
       <header className="mb-20 text-center md:text-left">
-        <h1 className="font-display text-5xl md:text-8xl uppercase italic tracking-tighter leading-[0.85] mb-6 text-text">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl uppercase italic tracking-tighter leading-[0.85] mb-6 text-text">
           Find Us <br /> <span className="text-accent">Today</span>
         </h1>
         <p className="max-w-xl text-text-dim font-medium">
-          Ready to start your fitness journey? Visit The Spartan Gym or get in touch with us via phone or email. We're here to help you build strength and discipline.
+          Ready to start your fitness journey? Visit The Spartan Gym or connect with us on WhatsApp. We're here to help you build strength and discipline.
         </p>
       </header>
 
@@ -46,15 +46,21 @@ export default function ContactView() {
               </div>
             </div>
 
-            <div className="gym-card flex flex-col items-center text-center gap-6 p-8">
-              <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                <Mail className="text-accent" size={24} />
+            <a 
+              href={GYM_DETAILS.whatsappChannel}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gym-card flex flex-col items-center text-center gap-6 p-8 hover:border-accent transition-all group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center group-hover:bg-accent transition-colors">
+                <MessageCircle className="text-accent group-hover:text-bg transition-colors" size={24} />
               </div>
               <div>
-                <h3 className="text-text-dim font-bold uppercase tracking-widest text-[10px] mb-2">Email</h3>
-                <p className="text-lg font-bold truncate max-w-[150px] text-text">{GYM_DETAILS.email}</p>
+                <h3 className="text-text-dim font-bold uppercase tracking-widest text-[10px] mb-2">WhatsApp Channel</h3>
+                <p className="text-sm font-bold text-text mb-1">Follow The Spartan Gym</p>
+                <p className="text-[9px] text-text-dim font-medium uppercase tracking-tight">Stay updated & join the channel</p>
               </div>
-            </div>
+            </a>
           </div>
 
           <div className="gym-card p-10">
@@ -77,7 +83,12 @@ export default function ContactView() {
         </div>
 
         {/* Map Placeholder */}
-        <div className="relative h-full min-h-[400px] rounded-[2.5rem] overflow-hidden group border border-border">
+        <a 
+          href={GYM_DETAILS.googleMapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative h-full min-h-[400px] rounded-[2.5rem] overflow-hidden group border border-border block"
+        >
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-bg via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
           <img 
             src="https://picsum.photos/seed/map-location/1000/1200" 
@@ -86,10 +97,13 @@ export default function ContactView() {
             referrerPolicy="no-referrer"
           />
           <div className="absolute bottom-10 left-10 z-20">
-            <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text">Visit Us Today</h2>
+            <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text group-hover:text-accent transition-colors">Visit Us Today</h2>
             <p className="text-text-dim mt-2 font-medium">Join the Spartan Brotherhood.</p>
+            <div className="mt-4 flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
+              Go to Location <ArrowRight size={14} />
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   );

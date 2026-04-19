@@ -53,7 +53,7 @@ export default function EquipmentView() {
   return (
     <div className="pt-32 pb-32 max-w-7xl mx-auto px-6">
       <header className="mb-20 text-center md:text-left">
-        <h1 className="font-display text-4xl md:text-8xl lg:text-9xl uppercase italic tracking-tighter leading-[0.85] mb-8 text-text">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-9xl uppercase italic tracking-tighter leading-[0.85] mb-8 text-text">
           The <br /> <span className="text-accent">Arsenal</span>
         </h1>
         <p className="max-w-xl text-text-dim font-medium">

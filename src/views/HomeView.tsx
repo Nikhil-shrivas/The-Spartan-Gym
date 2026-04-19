@@ -30,7 +30,7 @@ export default function HomeView() {
               Now Open: madipur village
             </div>
             
-            <h1 className="font-display text-5xl md:text-8xl lg:text-[10rem] leading-[0.85] uppercase italic tracking-tighter text-text">
+            <h1 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] leading-[0.85] uppercase italic tracking-tighter text-text">
               The <br />
               <span className="text-accent">Spartan</span> <br />
               Gym

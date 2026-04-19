@@ -31,10 +31,30 @@ export function Navbar() {
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-bg/80 backdrop-blur-xl border-b border-border flex items-center px-6 z-50">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-bg/80 backdrop-blur-xl border-b border-border flex items-center justify-between px-6 z-50">
         <Link to="/" className="flex items-center">
-          <span className="font-display text-3xl tracking-tighter uppercase italic text-accent leading-none">{GYM_DETAILS.name}</span>
+          <span className="font-display text-2xl tracking-tighter uppercase italic text-accent leading-none">{GYM_DETAILS.name}</span>
         </Link>
+        <div className="flex bg-surface rounded-full p-1 border border-border scale-75">
+          <button
+            onClick={() => setTheme('dark')}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'bg-[#ff0000] text-white' : 'text-zinc-500'}`}
+          >
+            D
+          </button>
+          <button
+            onClick={() => setTheme('light')}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${theme === 'light' ? 'bg-[#0088ff] text-white' : 'text-zinc-500'}`}
+          >
+            L
+          </button>
+          <button
+            onClick={() => setTheme('neon')}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${theme === 'neon' ? 'bg-[#00ff00] text-black' : 'text-zinc-500'}`}
+          >
+            N
+          </button>
+        </div>
       </div>
 
       {/* Desktop Top Nav */}

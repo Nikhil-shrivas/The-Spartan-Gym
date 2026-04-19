@@ -78,7 +78,7 @@ export default function MemberDashboardView() {
     <div className="pt-24 pb-32 max-w-7xl mx-auto px-6">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
         <div>
-          <h1 className="font-display text-4xl md:text-7xl uppercase italic tracking-tighter leading-none mb-2 text-text">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl uppercase italic tracking-tighter leading-none mb-2 text-text">
             Welcome, <br /> <span className="text-accent">{displayName}</span>
           </h1>
           <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export default function MemberDashboardView() {
 
         <button
           onClick={() => { setLoginCode(null); setIsStaff(false); navigate('/login'); }}
-          className="p-4 bg-surface border border-border rounded-2xl text-text-dim hover:text-text hover:bg-surface-dim transition-all flex items-center gap-3 group"
+          className="w-full md:w-auto p-4 bg-surface border border-border rounded-2xl text-text-dim hover:text-text hover:bg-surface-dim transition-all flex items-center justify-center gap-3 group"
         >
           <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
           <span className="font-display uppercase italic tracking-widest text-sm">Logout</span>
@@ -100,49 +100,49 @@ export default function MemberDashboardView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         {/* Info Card */}
-        <div className="lg:col-span-2 gym-card p-10 flex flex-col md:flex-row items-center gap-12 bg-bg border border-border">
-          <div className="relative">
-            <div className="w-48 h-48 rounded-full border-2 border-border flex flex-col items-center justify-center text-center">
+        <div className="lg:col-span-2 gym-card p-6 sm:p-10 flex flex-col md:flex-row items-center gap-12 bg-bg border border-border">
+          <div className="relative shrink-0">
+            <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-2 border-border flex flex-col items-center justify-center text-center">
               <span className="text-text-dim font-bold uppercase text-[10px] tracking-widest mb-1">{isStaff ? 'Staff Since' : 'Expires on'}</span>
-              <span className="font-display text-4xl italic text-accent">
+              <span className="font-display text-3xl sm:text-4xl italic text-accent">
                 {isStaff ? '2026' : new Date(member?.status === 'extended' ? member.extendedDate! : member?.expiryDate || '').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
               </span>
             </div>
             <div className="absolute inset-0 rounded-full border-t-2 border-accent animate-spin-slow opacity-20" />
           </div>
-          <div className="flex-1 space-y-6">
-             <h3 className="text-2xl font-display uppercase italic tracking-tight text-text">
+          <div className="flex-1 space-y-6 text-center md:text-left">
+             <h3 className="text-xl sm:text-2xl font-display uppercase italic tracking-tight text-text">
                {isStaff ? `Role: ${staffMember?.role}` : `Active Plan: ${member?.plan}`}
              </h3>
-             <p className="text-text-dim text-sm leading-relaxed max-w-sm">
+             <p className="text-text-dim text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
                {isStaff 
                 ? "As a valued staff member of The Spartan Gym, you have access to the dashboard. Maintain discipline and guide our warriors to greatness."
                 : `Your membership is currently ${member?.status}. Keep grinding. To extend or renew, please visit the gym counter and pay offline.`
                }
              </p>
-             <div className="flex items-center gap-4">
+             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
                <div className="flex items-center gap-2 p-3 bg-surface rounded-xl border border-border">
                  <Calendar className="text-accent" size={16} />
-                 <span className="text-xs font-bold font-mono text-text">System ID: {displayCode}</span>
+                 <span className="text-xs font-bold font-mono text-text">ID: {displayCode}</span>
                </div>
                <div className="flex items-center gap-2 p-3 bg-surface rounded-xl border border-border text-green-500">
                  <Shield className="" size={16} />
-                 <span className="text-xs font-bold font-mono italic">Verfied {isStaff ? 'Staff' : 'Member'}</span>
+                 <span className="text-xs font-bold font-mono italic">Verified</span>
                </div>
              </div>
           </div>
         </div>
 
         {/* Action Quick Links */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-6">
           <Link
             to="/tools"
-            className="flex-1 gym-card p-10 bg-surface border border-border hover:border-accent transition-all flex flex-col justify-between group"
+            className="flex-1 gym-card p-8 bg-surface border border-border hover:border-accent transition-all flex flex-col justify-between group"
           >
-            <Activity size={32} className="text-accent mb-8" />
+            <Activity size={32} className="text-accent mb-6" />
             <div>
-              <h4 className="text-xl font-display uppercase italic tracking-tight mb-2 text-text">Fitness Lab Tools</h4>
-              <p className="text-text-dim text-xs font-medium group-hover:text-text transition-colors">8 FREE fitness calculators</p>
+              <h4 className="text-xl font-display uppercase italic tracking-tight mb-2 text-text">Fitness Tools</h4>
+              <p className="text-text-dim text-xs font-medium group-hover:text-text transition-colors">8 FREE calculators</p>
             </div>
             <div className="flex justify-end mt-4">
               <ChevronRight className="text-accent group-hover:translate-x-2 transition-transform" />
@@ -153,12 +153,12 @@ export default function MemberDashboardView() {
             href={GYM_DETAILS.whatsappChannel}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 gym-card p-10 bg-accent/5 border border-accent/20 hover:bg-accent/10 transition-all flex flex-col justify-between group"
+            className="flex-1 gym-card p-8 bg-accent/5 border border-accent/20 hover:bg-accent/10 transition-all flex flex-col justify-between group"
           >
-            <MessageCircle size={32} className="text-accent mb-8" />
+            <MessageCircle size={32} className="text-accent mb-6" />
             <div>
-              <h4 className="text-xl font-display uppercase italic tracking-tight mb-2 text-text">WhatsApp Channel</h4>
-              <p className="text-text-dim text-xs font-medium group-hover:text-text transition-colors">Follow for GYM updates</p>
+              <h4 className="text-xl font-display uppercase italic tracking-tight mb-2 text-text">Updates</h4>
+              <p className="text-text-dim text-xs font-medium group-hover:text-text transition-colors">WhatsApp Channel</p>
             </div>
             <div className="flex justify-end mt-4">
               <ChevronRight className="text-accent group-hover:translate-x-2 transition-transform" />

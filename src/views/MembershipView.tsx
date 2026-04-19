@@ -11,7 +11,7 @@ export default function MembershipView() {
           <CreditCard size={14} />
           Pricing Structure
         </div>
-        <h1 className="font-display text-5xl md:text-8xl uppercase italic tracking-tighter leading-[0.85] text-text">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl uppercase italic tracking-tighter leading-[0.85] text-text">
           Membership <br /> <span className="text-accent">Plans</span>
         </h1>
         <p className="max-w-xl text-text-dim font-medium">

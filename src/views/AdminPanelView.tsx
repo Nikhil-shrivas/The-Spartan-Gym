@@ -245,37 +245,37 @@ export default function AdminPanelView() {
   if (loading) return (
     <div className="h-screen flex flex-col items-center justify-center gap-6 bg-bg">
       <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-      <div className="font-display text-2xl uppercase italic text-text animate-pulse">Establishing Secure Uplink...</div>
+      <div className="font-display text-2xl uppercase italic text-text animate-pulse tracking-widest">Secure Connection Initiated...</div>
     </div>
   );
 
   return (
     <div className="pt-32 pb-32 max-w-7xl mx-auto px-6">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+      <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
         <div>
-          <h1 className="font-display text-5xl md:text-8xl uppercase italic tracking-tighter leading-none mb-4 text-text">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-8xl uppercase italic tracking-tighter leading-none mb-4 text-text">
             {isAdmin ? 'Admin' : 'Staff'} <span className="text-accent">Control</span>
           </h1>
           <p className="text-text-dim font-medium tracking-tight uppercase text-xs tracking-[0.2em]">{isAdmin ? 'Spartan Operations Management Center' : 'Member Management Access'}</p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <button
             onClick={() => navigate('/tools')}
-            className="px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-sm flex items-center gap-2 hover:text-accent hover:border-accent/40 transition-all"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-xs sm:text-sm flex items-center justify-center gap-2 hover:text-accent hover:border-accent/40 transition-all"
           >
             <Calculator size={18} /> Tools
           </button>
           <button
             onClick={() => { setIsAdmin(false); setIsStaff(false); navigate('/login'); }}
-            className="px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-sm flex items-center gap-2 hover:text-text hover:border-text transition-all"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-xs sm:text-sm flex items-center justify-center gap-2 hover:text-text hover:border-text transition-all"
           >
-            <LogOut size={18} /> Logout
+            <LogOut size={18} /> Exit
           </button>
           <button
             onClick={() => activeTab === 'members' ? setIsAddMemberModalOpen(true) : setIsAddStaffModalOpen(true)}
-            className="px-8 py-4 bg-accent text-bg rounded-2xl font-display uppercase italic tracking-widest text-lg flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-accent/20"
+            className="w-full sm:w-auto px-6 sm:px-8 py-4 bg-accent text-bg rounded-2xl font-display uppercase italic tracking-widest text-base sm:text-lg flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-accent/20"
           >
-            <UserPlus size={24} /> {activeTab === 'members' ? 'Add Member' : 'Add Staff'}
+            <UserPlus size={24} /> {activeTab === 'members' ? 'Register' : 'Recruit'}
           </button>
         </div>
       </header>
@@ -372,35 +372,35 @@ export default function AdminPanelView() {
             <table className="w-full text-left border-collapse">
               <thead className="bg-surface-dim/50 border-b border-border">
                 <tr>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Member Name</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Contact Number</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Passcode</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Plan</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-accent">Expiry Date</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Status</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-right font-mono">Operations</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Member Name</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Contact Number</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Passcode</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Plan</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-accent">Expiry Date</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Status</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-right font-mono">Operations</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
                 {filteredMembers.map((member) => (
                   <tr key={member.id} className="hover:bg-accent/5 transition-colors group text-text">
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5">
                       <div className="font-bold text-base">{member.name}</div>
                     </td>
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5">
                       <div className="text-sm text-text font-mono">{member.phone}</div>
                     </td>
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5">
                       <span className="px-3 py-1.5 bg-bg rounded-lg text-xs font-mono font-bold tracking-widest border border-border text-accent">{member.membershipCode}</span>
                     </td>
-                    <td className="px-6 py-5 font-display uppercase italic tracking-tighter text-text-dim">{member.plan}</td>
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5 font-display uppercase italic tracking-tighter text-text-dim">{member.plan}</td>
+                    <td className="px-3 sm:px-6 py-5">
                       <div className="flex items-center gap-2 text-xs font-mono font-bold text-accent">
                         <Calendar size={14} />
                         {member.expiryDate}
                       </div>
                     </td>
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5">
                       <span className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest ${
                         member.status === 'active' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
                         member.status === 'extended' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
@@ -411,7 +411,7 @@ export default function AdminPanelView() {
                         {member.status}
                       </span>
                     </td>
-                    <td className="px-6 py-5 text-right">
+                    <td className="px-3 sm:px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-2">
                          <button onClick={() => updateMemberStatus(member.id!, 'active')} className="p-2.5 bg-bg border border-border rounded-xl hover:text-green-500 hover:border-green-500/40 transition-all" title="Activate"><Play size={16} /></button>
                          <button onClick={() => updateMemberStatus(member.id!, 'paused')} className="p-2.5 bg-bg border border-border rounded-xl hover:text-yellow-500 hover:border-yellow-500/40 transition-all" title="Pause"><Pause size={16} /></button>
@@ -429,20 +429,20 @@ export default function AdminPanelView() {
             <table className="w-full text-left border-collapse">
               <thead className="bg-surface-dim/50 border-b border-border">
                 <tr>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Staff Name</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Role</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Authentication Code</th>
-                  <th className="px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-right font-mono">Operations</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Staff Name</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Role</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim">Auth Code</th>
+                  <th className="px-3 sm:px-6 py-5 text-[10px] uppercase font-bold tracking-widest text-text-dim text-right font-mono">Ops</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
                 {filteredStaff.map((s) => (
                   <tr key={s.id} className="hover:bg-accent/5 transition-colors group text-text">
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5">
                       <div className="font-bold text-base">{s.name}</div>
                     </td>
-                    <td className="px-6 py-5 font-display uppercase italic tracking-tighter text-text-dim">{s.role}</td>
-                    <td className="px-6 py-5">
+                    <td className="px-3 sm:px-6 py-5 font-display uppercase italic tracking-tighter text-text-dim">{s.role}</td>
+                    <td className="px-3 sm:px-6 py-5">
                       <div className="flex items-center gap-3">
                         <span className="px-3 py-1.5 bg-bg rounded-lg text-xs font-mono font-bold tracking-widest border border-border text-accent">{s.staffCode}</span>
                         <button onClick={() => generateNewStaffCode(s.id!)} className="p-1.5 text-text-dim hover:text-accent transition-colors" title="Generate New Code">
@@ -450,7 +450,7 @@ export default function AdminPanelView() {
                         </button>
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-right">
+                    <td className="px-3 sm:px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-2">
                          <button onClick={() => setEditingStaff(s)} className="p-2.5 bg-bg border border-border rounded-xl hover:text-blue-500 hover:border-blue-500/40 transition-all" title="Edit Staff"><Edit3 size={16} /></button>
                          <button onClick={() => setDeleteConfirmation({ id: s.id!, type: 'staff', name: s.name })} className="p-2.5 bg-bg border border-border rounded-xl hover:text-accent hover:border-accent/40 transition-all" title="Remove Staff"><Trash2 size={16} /></button>
@@ -474,7 +474,7 @@ export default function AdminPanelView() {
             className="relative w-full max-w-lg bg-surface border border-border rounded-[3rem] p-10 shadow-2xl"
           >
             <div className="flex justify-between items-center mb-10">
-              <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text">Register Member</h2>
+              <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text">Member Enrollment</h2>
               <button onClick={() => { setIsAddMemberModalOpen(false); setError(null); }} className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-dim hover:text-text transition-all"><X size={20} /></button>
             </div>
 
@@ -494,7 +494,7 @@ export default function AdminPanelView() {
                 <input required value={newMember.phone} onChange={e => setNewMember({...newMember, phone: e.target.value})} className="w-full h-14 bg-bg border border-border text-text rounded-2xl px-6 focus:outline-none focus:border-accent transition-all font-medium" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-2">Personal Login Code (0-25 chars)</label>
+                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-2">Member Access Passcode</label>
                 <input required maxLength={25} value={newMember.personalCode} onChange={e => setNewMember({...newMember, personalCode: e.target.value})} placeholder="Choose a unique code" className="w-full h-14 bg-bg border border-border text-text rounded-2xl px-6 focus:outline-none focus:border-accent transition-all font-medium font-mono uppercase" />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -513,7 +513,7 @@ export default function AdminPanelView() {
                 </div>
               </div>
               <button type="submit" className="w-full py-5 bg-accent text-bg font-display uppercase italic tracking-widest text-lg rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3">
-                Finalize Registration <Check size={20} />
+                Confirm Enrollment <Check size={20} />
               </button>
             </form>
           </motion.div>
@@ -586,7 +586,7 @@ export default function AdminPanelView() {
             className="relative w-full max-w-lg bg-surface border border-border rounded-[3rem] p-10 shadow-2xl"
           >
             <div className="flex justify-between items-center mb-10">
-              <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text">Recruit Staff</h2>
+              <h2 className="font-display text-4xl uppercase italic tracking-tighter text-text">Authorize Staff</h2>
               <button onClick={() => { setIsAddStaffModalOpen(false); setError(null); }} className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-dim hover:text-text transition-all"><X size={20} /></button>
             </div>
 
@@ -606,7 +606,7 @@ export default function AdminPanelView() {
                 <input required value={newStaff.phone} onChange={e => setNewStaff({...newStaff, phone: e.target.value})} className="w-full h-14 bg-bg border border-border text-text rounded-2xl px-6 focus:outline-none focus:border-accent transition-all font-medium" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-2">Personal Login Code (0-25 chars)</label>
+                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-2">Staff Authentication Code</label>
                 <input required maxLength={25} value={newStaff.personalCode} onChange={e => setNewStaff({...newStaff, personalCode: e.target.value})} placeholder="Choose a unique code" className="w-full h-14 bg-bg border border-border text-text rounded-2xl px-6 focus:outline-none focus:border-accent transition-all font-medium font-mono uppercase" />
               </div>
               <div className="space-y-2">
@@ -614,7 +614,7 @@ export default function AdminPanelView() {
                 <input required value={newStaff.role} onChange={e => setNewStaff({...newStaff, role: e.target.value})} placeholder="e.g. Lead Trainer" className="w-full h-14 bg-bg border border-border text-text rounded-2xl px-6 focus:outline-none focus:border-accent transition-all font-medium" />
               </div>
               <button type="submit" className="w-full py-5 bg-accent text-bg font-display uppercase italic tracking-widest text-lg rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-3">
-                Activate Staff Access <Shield size={20} />
+                Grant System Access <Shield size={20} />
               </button>
             </form>
           </motion.div>

@@ -48,7 +48,7 @@ export default function App() {
                 <p className="text-text-dim max-w-sm mb-8 font-medium">Build Strength. Build Discipline. The ultimate fitness sanctuary in Madipur Village.</p>
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-bg flex items-center justify-center border border-border text-text-dim hover:text-accent transition-colors cursor-pointer text-xs font-bold font-mono">IG</div>
-                  <div className="w-10 h-10 rounded-full bg-bg flex items-center justify-center border border-border text-text-dim hover:text-accent transition-colors cursor-pointer text-xs font-bold font-mono">WA</div>
+                  <a href={GYM_DETAILS.whatsappChannel} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-bg flex items-center justify-center border border-border text-text-dim hover:text-accent transition-colors cursor-pointer text-xs font-bold font-mono">WA</a>
                 </div>
               </div>
               <div>
@@ -67,7 +67,9 @@ export default function App() {
                   NEAR JHEEL PARK,<br />
                   NEW DELHI - 63
                 </p>
-                <div className="mt-4 text-accent font-mono text-sm underline cursor-pointer">Get Directions</div>
+                <div className="mt-4 text-accent font-mono text-sm underline cursor-pointer hover:text-accent/80 transition-colors">
+                  <a href={GYM_DETAILS.googleMapUrl} target="_blank" rel="noopener noreferrer">Get Directions</a>
+                </div>
               </div>
             </div>
             <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-border text-center text-[10px] uppercase font-bold text-text-dim tracking-[0.3em]">

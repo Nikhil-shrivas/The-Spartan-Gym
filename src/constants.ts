@@ -12,7 +12,7 @@ export const GYM_DETAILS = {
     break: "2:00 PM – 4:00 PM",
     sunday: "Closed"
   },
-  whatsappChannel: "https://whatsapp.com/channel/Placeholder"
+  whatsappChannel: "https://whatsapp.com/channel/0029Vb83wpnFi8xb7YVCuM36"
 };
 
 export const MEMBERSHIP_PLANS = [
