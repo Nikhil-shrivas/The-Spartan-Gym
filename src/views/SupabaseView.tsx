@@ -7,33 +7,16 @@ export default function SupabaseView() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'connected' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const [manualUrl, setManualUrl] = useState('');
-  const [manualKey, setManualKey] = useState('');
-
-  const saveManualConfig = () => {
-    if (manualUrl && manualKey) {
-      localStorage.setItem('SPARTAN_SUPABASE_URL', manualUrl);
-      localStorage.setItem('SPARTAN_SUPABASE_KEY', manualKey);
-      window.location.reload();
-    }
-  };
-
-  const clearManualConfig = () => {
-    localStorage.removeItem('SPARTAN_SUPABASE_URL');
-    localStorage.removeItem('SPARTAN_SUPABASE_KEY');
-    window.location.reload();
-  };
-
   const checkConnection = async () => {
     setStatus('loading');
     setErrorMsg(null);
     try {
       if (supabaseUrl === 'https://placeholder.supabase.co' || !supabaseUrl) {
-        throw new Error('Project URL is missing. Please add VITE_SUPABASE_URL to Secrets.');
+        throw new Error('Project URL is missing. Please add VITE_SUPABASE_URL (e.g. https://xyz.supabase.co) to your AI Studio Secrets.');
       }
       
       if (!supabaseAnonKey || supabaseAnonKey === 'placeholder-key') {
-        throw new Error('Anon Key is missing. Please add VITE_SUPABASE_ANON_KEY to Secrets.');
+        throw new Error('Anon Key is missing. Please add VITE_SUPABASE_ANON_KEY to your AI Studio Secrets.');
       }
       
       // Just a simple query to check connection
@@ -127,56 +110,11 @@ export default function SupabaseView() {
           </button>
         </div>
 
-        {/* Emergency Manual Setup UI */}
-        {(status === 'error' || !supabaseUrl) && (
-          <div className="w-full mt-8 p-8 bg-accent/5 rounded-[2.5rem] border border-accent/20 text-left">
-            <h3 className="font-display uppercase italic tracking-widest text-sm text-accent mb-6 flex items-center gap-2">
-              <RefreshCw size={16} /> Urgent: Manual Connection Setup
-            </h3>
-            <p className="text-xs text-text-dim mb-8 leading-relaxed">
-              Agar system aapki keys auto-detect nahi kar pa raha hai, toh aap niche apna Supabase URL aur Key manual daal sakte hain. Ye turant kaam karega!
-            </p>
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-4">Supabase Project URL</label>
-                <input 
-                  type="text" 
-                  value={manualUrl}
-                  onChange={(e) => setManualUrl(e.target.value)}
-                  placeholder="https://xyz.supabase.co"
-                  className="w-full h-14 bg-bg border border-border rounded-2xl px-6 font-mono text-xs focus:border-accent outline-none transition-colors"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold tracking-widest text-text-dim ml-4">Anon Public Key</label>
-                <input 
-                  type="password" 
-                  value={manualKey}
-                  onChange={(e) => setManualKey(e.target.value)}
-                  placeholder="eyJhbG..."
-                  className="w-full h-14 bg-bg border border-border rounded-2xl px-6 font-mono text-xs focus:border-accent outline-none transition-colors"
-                />
-              </div>
-              <button
-                onClick={saveManualConfig}
-                className="w-full h-14 bg-accent text-bg rounded-2xl font-display uppercase italic tracking-widest hover:bg-accent/90 transition-all active:scale-95"
-              >
-                Connect Database Now
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Debug Section to help the user find typos */}
         <div className="w-full mt-8 p-6 bg-black/20 rounded-2xl border border-border/50 text-left overflow-hidden">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xs font-mono text-text-dim uppercase tracking-widest flex items-center gap-2">
-              <Shield size={14} /> System Debug Inspector
-            </h3>
-            {localStorage.getItem('SPARTAN_SUPABASE_URL') && (
-              <button onClick={clearManualConfig} className="text-[9px] text-accent underline uppercase font-bold">Clear Manual Data</button>
-            )}
-          </div>
+          <h3 className="text-xs font-mono text-text-dim uppercase tracking-widest mb-4 flex items-center gap-2">
+            <Shield size={14} /> System Debug Inspector
+          </h3>
           <div className="space-y-2 font-mono text-[10px]">
             <div className="flex justify-between border-b border-border/20 pb-2">
               <span className="text-accent">VITE_SUPABASE_URL:</span>
