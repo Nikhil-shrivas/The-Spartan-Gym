@@ -25,15 +25,16 @@ export default function LoginView() {
     if (!code) return;
 
     const trimmedCode = code.trim();
+    const upperCode = trimmedCode.toUpperCase();
     setLoading(true);
     setError('');
 
     try {
       // 1. Check Special Admin Code - Full Access
-      if (trimmedCode === ADMIN_TERMINAL_CODE) {
+      if (upperCode === ADMIN_TERMINAL_CODE.toUpperCase()) {
         setIsAdmin(true);
         setIsStaff(false);
-        setLoginCode(trimmedCode);
+        setLoginCode(upperCode);
         navigate('/admin');
         return;
       }
@@ -42,11 +43,11 @@ export default function LoginView() {
       const { data: staffData, error: staffError } = await supabase
         .from('staff')
         .select('*')
-        .eq('staffCode', trimmedCode)
-        .single();
+        .eq('staffCode', upperCode)
+        .maybeSingle();
 
       if (staffData && !staffError) {
-         setLoginCode(trimmedCode);
+         setLoginCode(upperCode);
          setIsStaff(true);
          setIsAdmin(false);
          navigate('/admin'); 
@@ -57,16 +58,21 @@ export default function LoginView() {
       const { data: memberData, error: memberError } = await supabase
         .from('members')
         .select('*')
-        .eq('membershipCode', trimmedCode)
-        .single();
+        .eq('membershipCode', upperCode)
+        .maybeSingle();
 
-      if (!memberData || memberError) {
+      if (memberError) {
+        console.error("Supabase Query Error:", memberError);
+        throw memberError;
+      }
+
+      if (!memberData) {
         setError('Unauthorized code. Please contact the administrator.');
       } else {
         if (memberData.status === 'expired' || memberData.status === 'paused') {
           setError(`Your membership is ${memberData.status}. Please contact the owner.`);
         } else {
-          setLoginCode(trimmedCode);
+          setLoginCode(upperCode);
           setIsStaff(false);
           setIsAdmin(false);
           navigate('/dashboard');

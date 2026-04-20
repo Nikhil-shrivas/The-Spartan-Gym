@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-const rawUrl = import.meta.env.VITE_SUPABASE_URL || localStorage.getItem('SPARTAN_SUPABASE_URL');
+const rawUrl = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || localStorage.getItem('SPARTAN_SUPABASE_URL');
 export const supabaseUrl = rawUrl ? rawUrl.trim().replace(/\/$/, '') : undefined;
-export const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON || localStorage.getItem('SPARTAN_SUPABASE_KEY'))?.trim();
+export const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON || localStorage.getItem('SPARTAN_SUPABASE_KEY'))?.trim();
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn(
