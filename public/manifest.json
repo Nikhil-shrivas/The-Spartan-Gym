@@ -1,0 +1,21 @@
+{
+  "name": "The Spartan Gym",
+  "short_name": "The Spartan Gym",
+  "description": "Build Strength. Build Discipline. The ultimate fitness sanctuary.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#ff3b3b",
+  "icons": [
+    {
+      "src": "/logo.png.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/logo.png.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
