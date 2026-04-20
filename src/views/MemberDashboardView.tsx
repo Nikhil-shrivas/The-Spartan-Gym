@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
-import { db, MemberData, StaffData, handleFirestoreError } from '../lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { supabase, MemberData, StaffData, handleSupabaseError } from '../lib/supabase';
 import { Shield, Sparkles, Clock, Calendar, LogOut, ChevronRight, MessageCircle, Activity } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GYM_DETAILS } from '../constants';
@@ -23,26 +22,34 @@ export default function MemberDashboardView() {
     const fetchData = async () => {
       try {
         if (isStaff) {
-          const q = query(collection(db, 'staff'), where('staffCode', '==', loginCode));
-          const snap = await getDocs(q);
-          if (!snap.empty) {
-            setStaffMember({ id: snap.docs[0].id, ...snap.docs[0].data() } as StaffData);
+          const { data, error } = await supabase
+            .from('staff')
+            .select('*')
+            .eq('staffCode', loginCode)
+            .single();
+
+          if (data && !error) {
+            setStaffMember(data as StaffData);
           } else {
             setLoginCode(null);
             navigate('/login');
           }
         } else {
-          const q = query(collection(db, 'members'), where('membershipCode', '==', loginCode));
-          const snap = await getDocs(q);
-          if (!snap.empty) {
-            setMember({ id: snap.docs[0].id, ...snap.docs[0].data() } as MemberData);
+          const { data, error } = await supabase
+            .from('members')
+            .select('*')
+            .eq('membershipCode', loginCode)
+            .single();
+
+          if (data && !error) {
+            setMember(data as MemberData);
           } else {
             setLoginCode(null);
             navigate('/login');
           }
         }
       } catch (err) {
-        handleFirestoreError(err, 'get', isStaff ? 'staff' : 'members');
+        handleSupabaseError(err, 'get', isStaff ? 'staff' : 'members');
       } finally {
         setLoading(false);
       }

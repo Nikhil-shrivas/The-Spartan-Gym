@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth, isUserAdmin } from '../lib/firebase';
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null;
   isAdmin: boolean;
   isStaff: boolean;
   loading: boolean;
@@ -16,7 +14,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem('admin-session') === 'true');
   const [isStaff, setIsStaff] = useState(localStorage.getItem('staff-session') === 'true');
   const [loading, setLoading] = useState(true);
@@ -41,16 +39,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        const adminStatus = await isUserAdmin(firebaseUser.uid);
-        setIsAdmin(true); // If logged in via Firebase, we can trust they have a role or just treat admin mode
-      } 
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    // We already initialize from localStorage above
+    setLoading(false);
   }, []);
 
   return (

@@ -17,6 +17,7 @@ import CalculatorsView from './views/CalculatorsView';
 import LoginView from './views/LoginView';
 import MemberDashboardView from './views/MemberDashboardView';
 import AdminPanelView from './views/AdminPanelView';
+import SupabaseView from './views/SupabaseView';
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/login" element={<LoginView />} />
                 <Route path="/dashboard" element={<MemberDashboardView />} />
                 <Route path="/admin" element={<AdminPanelView />} />
+                <Route path="/supabase" element={<SupabaseView />} />
               </Routes>
             </main>
 

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
-import { db, handleFirestoreError, googleProvider, ADMIN_TERMINAL_CODE } from '../lib/firebase';
-import { signInWithPopup } from 'firebase/auth';
-import { auth } from '../lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { supabase, handleSupabaseError, ADMIN_TERMINAL_CODE } from '../lib/supabase';
 import { ShieldCheck, ChevronRight, AlertCircle, Quote, LogIn, Key } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,26 +38,31 @@ export default function LoginView() {
         return;
       }
 
-      // 2. Check Staff Collection - Role Resticted Management
-      const staffQuery = query(collection(db, 'staff'), where('staffCode', '==', trimmedCode));
-      const staffSnap = await getDocs(staffQuery);
+      // 2. Check Staff Collection - Role Restricted Management
+      const { data: staffData, error: staffError } = await supabase
+        .from('staff')
+        .select('*')
+        .eq('staffCode', trimmedCode)
+        .single();
 
-      if (!staffSnap.empty) {
+      if (staffData && !staffError) {
          setLoginCode(trimmedCode);
          setIsStaff(true);
          setIsAdmin(false);
-         navigate('/admin'); // Staff also go to admin panel but see restricted tabs
+         navigate('/admin'); 
          return;
       }
 
       // 3. Check Members Collection - Stats Dashboard
-      const memberQuery = query(collection(db, 'members'), where('membershipCode', '==', trimmedCode));
-      const memberSnap = await getDocs(memberQuery);
+      const { data: memberData, error: memberError } = await supabase
+        .from('members')
+        .select('*')
+        .eq('membershipCode', trimmedCode)
+        .single();
 
-      if (memberSnap.empty) {
+      if (!memberData || memberError) {
         setError('Unauthorized code. Please contact the administrator.');
       } else {
-        const memberData = memberSnap.docs[0].data();
         if (memberData.status === 'expired' || memberData.status === 'paused') {
           setError(`Your membership is ${memberData.status}. Please contact the owner.`);
         } else {
@@ -71,8 +73,8 @@ export default function LoginView() {
         }
       }
     } catch (err) {
-      handleFirestoreError(err, 'login', 'security');
-      setError('Connection error. Try again.');
+      console.error("Login Error:", err);
+      setError('Connection error. Verify your database configuration.');
     } finally {
       setLoading(false);
     }

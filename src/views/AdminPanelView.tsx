@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { db, MemberData, StaffData, handleFirestoreError } from '../lib/firebase';
-import { collection, query, getDocs, addDoc, deleteDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { supabase, MemberData, StaffData, handleSupabaseError } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Users, UserPlus, Trash2, Search, Filter, Edit3, X, Check, Pause, Play, Shield, Briefcase, RefreshCw, LogOut, AlertCircle, Calendar, Sparkles, XCircle, Calculator } from 'lucide-react';
+import { Users, UserPlus, Trash2, Search, Filter, Edit3, X, Check, Pause, Play, Shield, Briefcase, RefreshCw, LogOut, AlertCircle, Calendar, Sparkles, XCircle, Calculator, Database } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminPanelView() {
@@ -68,21 +67,21 @@ export default function AdminPanelView() {
 
   const fetchStaff = async () => {
     try {
-      const snap = await getDocs(collection(db, 'staff'));
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as StaffData));
-      setStaff(data);
+      const { data, error } = await supabase.from('staff').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      setStaff(data || []);
     } catch (err) {
-      handleFirestoreError(err, 'list', 'staff');
+      handleSupabaseError(err, 'list', 'staff');
     }
   };
 
   const fetchMembers = async () => {
     try {
-      const snap = await getDocs(collection(db, 'members'));
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as MemberData));
-      setMembers(data);
+      const { data, error } = await supabase.from('members').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      setMembers(data || []);
     } catch (err) {
-      handleFirestoreError(err, 'list', 'members');
+      handleSupabaseError(err, 'list', 'members');
     }
   };
 
@@ -94,16 +93,16 @@ export default function AdminPanelView() {
     }
     
     try {
-      await addDoc(collection(db, 'members'), {
+      const { error } = await supabase.from('members').insert({
         name: newMember.name,
         phone: newMember.phone,
         plan: newMember.plan,
         membershipCode: newMember.personalCode.trim().toUpperCase(),
         expiryDate: newMember.expiryDate,
-        status: 'active',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        status: 'active'
       });
+      if (error) throw error;
+      
       setIsAddMemberModalOpen(false);
       setError(null);
       fetchMembers();
@@ -117,14 +116,17 @@ export default function AdminPanelView() {
     e.preventDefault();
     if (!editingMember?.id) return;
     try {
-      await updateDoc(doc(db, 'members', editingMember.id), {
+      const { error } = await supabase.from('members').update({
         name: editingMember.name,
         phone: editingMember.phone,
         plan: editingMember.plan,
         membershipCode: editingMember.membershipCode.trim().toUpperCase(),
         expiryDate: editingMember.expiryDate,
-        updatedAt: serverTimestamp()
-      });
+        updated_at: new Date().toISOString()
+      }).eq('id', editingMember.id);
+      
+      if (error) throw error;
+      
       setEditingMember(null);
       setError(null);
       fetchMembers();
@@ -141,14 +143,14 @@ export default function AdminPanelView() {
     }
     
     try {
-      await addDoc(collection(db, 'staff'), {
+      const { error } = await supabase.from('staff').insert({
         name: newStaff.name,
         phone: newStaff.phone,
         role: newStaff.role,
-        staffCode: newStaff.personalCode.trim().toUpperCase(),
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        staffCode: newStaff.personalCode.trim().toUpperCase()
       });
+      if (error) throw error;
+      
       setIsAddStaffModalOpen(false);
       setError(null);
       fetchStaff();
@@ -162,13 +164,16 @@ export default function AdminPanelView() {
     e.preventDefault();
     if (!editingStaff?.id) return;
     try {
-      await updateDoc(doc(db, 'staff', editingStaff.id), {
+      const { error } = await supabase.from('staff').update({
         name: editingStaff.name,
         phone: editingStaff.phone || '',
         role: editingStaff.role,
         staffCode: editingStaff.staffCode.trim().toUpperCase(),
-        updatedAt: serverTimestamp()
-      });
+        updated_at: new Date().toISOString()
+      }).eq('id', editingStaff.id);
+      
+      if (error) throw error;
+      
       setEditingStaff(null);
       setError(null);
       fetchData();
@@ -179,19 +184,22 @@ export default function AdminPanelView() {
 
   const updateMemberStatus = async (id: string, newStatus: string) => {
     try {
-      await updateDoc(doc(db, 'members', id), { 
+      const { error } = await supabase.from('members').update({ 
         status: newStatus,
-        updatedAt: serverTimestamp()
-      });
+        updated_at: new Date().toISOString()
+      }).eq('id', id);
+      
+      if (error) throw error;
       fetchMembers();
     } catch (err) {
-      handleFirestoreError(err, 'update', 'members');
+      handleSupabaseError(err, 'update', 'members');
     }
   };
 
   const deleteMember = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'members', id));
+      const { error } = await supabase.from('members').delete().eq('id', id);
+      if (error) throw error;
       fetchMembers();
       setDeleteConfirmation(null);
     } catch (err: any) {
@@ -202,7 +210,8 @@ export default function AdminPanelView() {
 
   const deleteStaff = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'staff', id));
+      const { error } = await supabase.from('staff').delete().eq('id', id);
+      if (error) throw error;
       fetchStaff();
       setDeleteConfirmation(null);
     } catch (err: any) {
@@ -214,13 +223,15 @@ export default function AdminPanelView() {
   const generateNewStaffCode = async (id: string) => {
     const newCode = 'STAFF-' + Math.random().toString(36).substring(2, 6).toUpperCase();
     try {
-      await updateDoc(doc(db, 'staff', id), {
+      const { error } = await supabase.from('staff').update({
         staffCode: newCode,
-        updatedAt: serverTimestamp()
-      });
+        updated_at: new Date().toISOString()
+      }).eq('id', id);
+      
+      if (error) throw error;
       fetchStaff();
     } catch (err) {
-      handleFirestoreError(err, 'update', 'staff');
+      handleSupabaseError(err, 'update', 'staff');
     }
   };
 
@@ -229,7 +240,7 @@ export default function AdminPanelView() {
                          m.membershipCode.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || m.status === statusFilter;
     return matchesSearch && matchesStatus;
-  }).sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
+  }).sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
 
   const filteredStaff = staff.filter(s => 
     s.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -259,6 +270,12 @@ export default function AdminPanelView() {
           <p className="text-text-dim font-medium tracking-tight uppercase text-xs tracking-[0.2em]">{isAdmin ? 'Spartan Operations Management Center' : 'Member Management Access'}</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <button
+            onClick={() => navigate('/supabase')}
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-xs sm:text-sm flex items-center justify-center gap-2 hover:text-accent hover:border-accent/40 transition-all text-accent border-accent/20"
+          >
+            <Database size={18} /> Supabase
+          </button>
           <button
             onClick={() => navigate('/tools')}
             className="flex-1 sm:flex-none px-4 sm:px-6 py-4 bg-surface border border-border text-text-dim rounded-2xl font-display uppercase italic tracking-widest text-xs sm:text-sm flex items-center justify-center gap-2 hover:text-accent hover:border-accent/40 transition-all"
