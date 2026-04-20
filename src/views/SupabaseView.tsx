@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { supabase, supabaseUrl } from '../lib/supabase';
+import { supabase, supabaseUrl, supabaseAnonKey } from '../lib/supabase';
 import { Database, Shield, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function SupabaseView() {
@@ -13,6 +13,10 @@ export default function SupabaseView() {
     try {
       if (supabaseUrl === 'https://placeholder.supabase.co' || !supabaseUrl) {
         throw new Error('Project URL is missing. Please add VITE_SUPABASE_URL to Secrets.');
+      }
+      
+      if (!supabaseAnonKey || supabaseAnonKey === 'placeholder-key') {
+        throw new Error('Anon Key is missing. Please add VITE_SUPABASE_ANON_KEY to Secrets.');
       }
       
       // Just a simple query to check connection
