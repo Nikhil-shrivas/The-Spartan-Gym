@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { supabase } from '../lib/supabase';
+import { supabase, supabaseUrl } from '../lib/supabase';
 import { Database, Shield, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function SupabaseView() {
@@ -11,16 +11,22 @@ export default function SupabaseView() {
     setStatus('loading');
     setErrorMsg(null);
     try {
+      if (supabaseUrl === 'https://placeholder.supabase.co' || !supabaseUrl) {
+        throw new Error('Project URL is missing. Please add VITE_SUPABASE_URL to Secrets.');
+      }
+      
       // Just a simple query to check connection
       // We don't even need a table, we can just ping the API
       const { data, error } = await supabase.from('_test_connection').select('*').limit(1);
       
       // Note: _test_connection might not exist, which is fine, as long as it's not a connection error
-      if (error && error.code === 'PGRST301') {
-        // This is a 404 for the table, but it means we CONNECTED to the API successfully
-        setStatus('connected');
-      } else if (error) {
-        throw error;
+      if (error) {
+        // If we get a PostgREST error (like table not found), it means we successfully hit the API
+        if (error.code?.startsWith('PGRST') || error.message?.includes('schema cache')) {
+          setStatus('connected');
+        } else {
+          throw error;
+        }
       } else {
         setStatus('connected');
       }
