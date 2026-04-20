@@ -1,19 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const getEnv = (key: string) => {
-   return import.meta.env[key] || (process?.env && process.env[key]) || (window as any)?._env_?.[key];
-};
+// Absolute robust extraction of Supabase credentials
+// This handles injection from Vite's define, process.env, or import.meta.env
+export const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || '').trim().replace(/\/$/, '');
+export const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
 
-const rawUrl = getEnv('VITE_SUPABASE_URL');
-export const supabaseUrl = rawUrl ? rawUrl.trim().replace(/\/$/, '') : undefined;
-
-const rawKey = getEnv('VITE_SUPABASE_ANON_KEY') || getEnv('VITE_SUPABASE_ANON');
-export const supabaseAnonKey = rawKey?.trim();
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    'Supabase environment variables are missing. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment variables.'
-  );
+if (!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'https://placeholder.supabase.co' || supabaseAnonKey === 'placeholder-key') {
+  console.error('CRITICAL: Supabase credentials missing. Check AI Studio Secrets.');
 }
 
 export const supabase = createClient(
