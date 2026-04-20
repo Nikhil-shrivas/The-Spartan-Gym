@@ -110,6 +110,30 @@ export default function SupabaseView() {
           </button>
         </div>
 
+        {/* Debug Section to help the user find typos */}
+        <div className="w-full mt-8 p-6 bg-black/20 rounded-2xl border border-border/50 text-left overflow-hidden">
+          <h3 className="text-xs font-mono text-text-dim uppercase tracking-widest mb-4 flex items-center gap-2">
+            <Shield size={14} /> System Debug Inspector
+          </h3>
+          <div className="space-y-2 font-mono text-[10px]">
+            <div className="flex justify-between border-b border-border/20 pb-2">
+              <span className="text-accent">VITE_SUPABASE_URL:</span>
+              <span className="text-text truncate ml-4">
+                {supabaseUrl ? `${supabaseUrl.substring(0, 15)}...` : '(Empty/Missing)'}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-border/20 pb-2">
+              <span className="text-accent">VITE_SUPABASE_ANON:</span>
+              <span className="text-text truncate ml-4">
+                {supabaseAnonKey ? 'Verified (Present)' : '(Empty/Missing)'}
+              </span>
+            </div>
+          </div>
+          <p className="mt-4 text-[9px] text-text-dim leading-relaxed">
+            Note: If any key shows "(Empty/Missing)", please double-check the spelling in Settings &gt; Secrets and ensure you clicked "Restart Dev Server".
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-8">
           <div className="p-6 bg-bg/50 border border-border rounded-[2rem] text-left">
             <h3 className="font-display uppercase italic tracking-widest text-xs text-accent mb-3">Database Type</h3>
